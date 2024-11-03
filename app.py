@@ -35,3 +35,7 @@ if user_input == str(st.session_state.target_number):
     st.write ("you guessed correctly, mortal")
 else:
     st.write ("guess further, mortal")
+
+if st.button('Reset Random Number'):
+    st.session_state.random_number = random.randint(1, 100)
+    st.write('Random number has been reset!')
