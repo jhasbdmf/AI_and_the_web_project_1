@@ -13,3 +13,10 @@ st.text ("I hereby promise to answer your questions veraciously.")
 st.text ("Should you utter a correct number, I shall bestow an everlasting life upon you.")
 st.text ("Should you only utter falsehoods, your carbon suit is to be annihilated. Good luck!")
 
+
+# Creating a textbox input
+user_input = st.text_input('Enter some text:')
+
+# Display the input text
+if user_input:
+    st.write('You entered:', user_input)
