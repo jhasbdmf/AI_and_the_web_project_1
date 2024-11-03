@@ -14,13 +14,14 @@ st.text ("I hereby promise to answer your questions veraciously.")
 st.text ("Should you utter a correct number, I shall bestow an everlasting life upon you.")
 st.text ("Should you only utter falsehoods, your carbon suit is to be annihilated. Good luck!")
 
-if 'count' not in st.session_state:
-    target_number = random.randint(1,10)
-    st.write("Target number is ", target_number)
-    st.session_state.count = target_number 
 
 
 
+if 'target_number' not in st.session_state:
+    st.session_state.target_number = random.randint(1,10)
+
+st.write("Target number is ", st.session_state.target_number)
+ 
 
 
 # Creating a textbox input
@@ -30,9 +31,7 @@ user_input = st.text_input('Enter some text:')
 if user_input:
     st.write('You entered:', user_input)
 
-if user_input == st.session_state.count:
+if user_input == st.session_state.target_number:
     st.write ("you guessed correctly, mortal")
-    target_number = random.randint(1,10)
-    st.session_state.count = target_number 
 else:
     st.write ("guess further, mortal")
