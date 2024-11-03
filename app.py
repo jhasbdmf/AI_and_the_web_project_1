@@ -32,6 +32,7 @@ if user_input:
 
 if user_input == str(st.session_state.target_number):
     st.write ("you guessed correctly, mortal")
+    st.session_state.target_number = random.randint(1,10)
 else:
     st.write ("guess further, mortal")
 
