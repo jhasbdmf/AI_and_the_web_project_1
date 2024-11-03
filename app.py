@@ -19,7 +19,7 @@ st.text ("Should you only utter falsehoods, your carbon suit is to be annihilate
 
 if 'target_number' not in st.session_state:
     st.session_state.target_number = random.randint(1,10)
-    st.write("Target number is ", st.session_state.target_number)
+st.write("Target number is ", st.session_state.target_number)
  
 
 
@@ -35,8 +35,5 @@ if user_input == str(st.session_state.target_number):
 else:
     st.write ("guess further, mortal")
 
-if st.button('Reset Random Number'):
-    st.session_state.random_number = random.randint(1, 100)
-    st.write('Random number has been reset!')
-    st.write("Target number is ", st.session_state.target_number)
+
     
