@@ -30,7 +30,7 @@ user_input = st.text_input('Enter some text:')
 if user_input:
     st.write('You entered:', user_input)
 
-if user_input == target_number:
+if user_input == st.session_state.count:
     st.write ("you guessed correctly, mortal")
     target_number = random.randint(1,10)
     st.session_state.count = target_number 
