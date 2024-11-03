@@ -31,7 +31,7 @@ user_input = st.text_input('Enter some text:')
 if user_input:
     st.write('You entered:', user_input)
 
-if user_input == st.session_state.target_number:
+if user_input == str(st.session_state.target_number):
     st.write ("you guessed correctly, mortal")
 else:
     st.write ("guess further, mortal")
