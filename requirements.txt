@@ -1,5 +1,4 @@
 streamlit
 openai
-mysqlclient
-SQLAlchemy
 pandas
+random
