@@ -1,6 +1,48 @@
 import streamlit as st
 import random
 from openai import OpenAI
+import pandas as pd
+
+
+def generate_a_response_via_openAI(prompt):
+    client = OpenAI(api_key="sk-svcacct-sasYDh93HtW8T-ZtXNCUElcOwmpB__D0ql2JJXLPl3kTrwrVeY2W_hTXl1AhYMsT3BlbkFJLcW4LbU2SOAgDFeOFXJyCA-l_xvOKYqPDTy1YJ2lGsEqPHLIXGwctBw7FOuGVAA")
+    model = "gpt-4o-mini"
+
+    chat_completion = client.chat.completions.create(
+                model=model,
+                messages=[
+                    {"role": "user", "content": prompt},
+                    ],
+            )
+
+    return chat_completion.choices[0].message.content
+
+def generate_a_prompt(guess, that_which_should_be_guessed):
+
+    prompt = "We play a number comparison game. The number the question pertains to is " + str(that_which_should_be_guessed) + "."
+    prompt += " the question: " + guess
+    prompt += """Generate an explicit and honest response whether the question after the colon contains the target number
+                without telling the target number or making hints, without quotation marks and further comments.
+                If the prompt contains numbers, then at least one of them is to be compared with the target number.  
+                The response should be made as if it was from a polite artificial superintelligence
+                which somewhat looks down upon humans yet answers their questions directly, honestly and ironically."""  
+                
+                
+            
+    
+    topics_for_jokes = []
+    topics_for_jokes.append("many humans consider themselves the apex of creation despite having modest intelligence")
+    topics_for_jokes.append(
+        "computers outperform human brains, which are shaped by millions of years of evolutionary improvement, in symbolic tasks"
+    )
+    topics_for_jokes.append("humans are monkeys on steroids")
+    topics_for_jokes.append("human existence is futile and meaningless")
+    joke_index = random.randint(0,len(topics_for_jokes)-1)
+    prompt += "The response should include a funny joke about the fact that " + topics_for_jokes[joke_index] + "."
+
+    return prompt
+
+
 
 
 def generate_response_via_openAI(prompt):
@@ -49,6 +91,10 @@ if __name__ == "__main__":
 
     if "messages" not in st.session_state:
         st.session_state.messages = []
+    
+    
+
+    #species_info_dataframe = pd.read_csv("filtered_chordate_species.csv")
  
     skynet_avatar_url = 'https://www.yourteesindy.com/cdn/shop/products/Skynet_1024x1024.png'
     user_avatar_url = "https://sketchok.com/images/articles/01-cartoons/027-avatar/04/07.jpg"
@@ -61,9 +107,9 @@ if __name__ == "__main__":
 #st.image(avatar_url, width=40)  # Adjust width as needed
 
 # Creating a textbox input
-    user_input = st.chat_input('Enter your guess:')
+    user_input = st.chat_input('Enter your question:')
 
-if user_input:
+    if user_input:
         st.session_state.number_of_guesses += 1
         st.session_state.history_of_guesses.append(user_input)
 
@@ -72,26 +118,17 @@ if user_input:
         
         with st.chat_message("user", avatar = user_avatar_url):
             st.write(user_input)
-        
+
+        prompt = generate_a_prompt (user_input, st.session_state.target_number)
+        response = generate_response_via_openAI(prompt)
+
+        st.session_state.messages.append({"role": "Skynet", "content": response, "avatar": skynet_avatar_url})
+        with st.chat_message("Skynet", avatar=skynet_avatar_url):
+                st.write(response)
+
+
     
-        if user_input == str(st.session_state.target_number):
-            st.session_state.messages.append({"role": "Skynet", "content": "you guessed correctly, mortal", "avatar": user_avatar_url})
-            
-
-            with st.chat_message("Skynet", avatar = skynet_avatar_url):
-                st.write(generate_response_via_openAI("You are Skynet who plays a number guessing game with a human. You keep a human alive if he guesses the number correctly. The guess is correct. Inform the human that he is staying alive"))
-
-
-            with st.chat_message("Skynet", avatar=skynet_avatar_url):
-                st.write("you guessed correctly, mortal")
-            st.session_state.number_of_guesses = 0
-            st.session_state.history_of_guesses = []
-            st.session_state.target_number = random.randint(1,10)
-        else:
-        #st.write ("guess further, mortal")
-            st.session_state.messages.append({"role": "Skynet", "content": "guess further, mortal", "avatar": skynet_avatar_url})
-            with st.chat_message("Skynet", avatar = skynet_avatar_url):
-                st.write(generate_response_via_openAI("You are Skynet who plays a number guessing game with a human. You keep a human alive if he guesses the number correctly. The guess is incorrect. Inform the human that he should keep on guessing"))
+    
 
 
             
