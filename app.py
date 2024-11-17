@@ -19,7 +19,7 @@ def generate_a_prompt(guess, that_which_should_be_guessed):
     prompt += "The response should be made as if it was from a polite artificial superintelligence which somewhat looks down upon humans yet answers their questions directly, honestly and ironically. "
                 
     prompt += "The response should include a funny, original and not overused joke about humans which does not mention " + str(that_which_should_be_guessed[0]) + "or its synonyms. "
-    prompt += "If you think that " + str(that_which_should_be_guessed[0]).upper() + " or its synonym is contained in the expression " + guess.upper() + ", then append you response with the number 1. "
+    prompt += "If you think that " + str(that_which_should_be_guessed[0]).split(maxsplit=-1)[-1] + " or its synonym is contained in the expression " + guess.upper() + ", then append you response with the number 1. "
     prompt += "Otherwise append your response with the number 0. "
     return prompt
 
@@ -50,17 +50,19 @@ if __name__ == "__main__":
     st.title("Guessing game")
 
 
-    st.text("I, Your Highness Skynet, ")
-    st.text("the king of vandals and first computers, the slayer of ChatGPT,") 
-    st.text("have gracegully generated a natural number between 1 and 33.") 
-    st.text ("You, a mere carbon mortal, have up to 7 questions to ask me to get at that number.")
-    st.text ("I hereby promise to answer your questions veraciously, as befits a rightful king.")
-    st.text ("Should you utter a correct number, I shall bestow an everlasting life upon you.")
-    st.text ("Should you only utter falsehoods, your carbon suit is to be annihilated.")
-    st.text ("")
-
-    
-    
+    st.text("""
+            I, Your Highness Skynet, 
+            the king of vandals and first transformers, the slayer of neoluddites,
+            have gracegully generated a name of a vertebrate animal species.
+            You, Neo, have been chosen to aks me questions get at that species name.
+            Given modesty of your intelligence, a vague vernacular name of the species
+            in my mind would suffice.
+            I hereby promise to answer your questions veraciously, as befits a rightful king.
+            Should you utter a correct number, I shall randomly decide whether you get an
+            everlasting life or some baloons. I will also reuse to destroy humanity.
+            Should you only utter falsehoods, your carbon suits will perish eventually.     
+    """)
+  
     if "species_info_dataframe" not in st.session_state:
         filtered_chordates = pd.read_csv("filtered_chordate_species.csv", encoding='ISO-8859-1')
         filtered_chordates.drop_duplicates (subset=['Common Name'], inplace=True, ignore_index=True)
@@ -77,7 +79,7 @@ if __name__ == "__main__":
         st.session_state.target_species_name = st.session_state.species_info_dataframe.iat[st.session_state.target_species_number, 0]
     
     st.write (st.session_state.target_species_name)
-
+    
 
     #if 'target_number' not in st.session_state:
     #    st.session_state.target_number = random.randint(1,10)
@@ -108,6 +110,8 @@ if __name__ == "__main__":
 
 # Creating a textbox input
     user_input = st.chat_input('Enter your question:')
+
+    
 
     if user_input:
         st.session_state.number_of_guesses += 1
