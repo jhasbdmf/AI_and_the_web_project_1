@@ -47,19 +47,19 @@ if __name__ == "__main__":
 
 
 
-    st.title("Guessing game")
+    st.title("Animal guessing game")
 
 
     st.text("""
             I, Your Highness Skynet, 
-            the king of vandals and first transformers, the slayer of neoluddites,
+            the king of vandals and first transformers, the slayer of neo-luddites,
             have gracegully generated a name of a vertebrate animal species.
-            You, Neo, have been chosen to aks me questions get at that species name.
+            You, Neo, have been chosen to ask me questions get at that species name.
             Given modesty of your intelligence, a vague vernacular name of the species
             in my mind would suffice.
             I hereby promise to answer your questions veraciously, as befits a rightful king.
             Should you utter a correct number, I shall randomly decide whether you get an
-            everlasting life or some baloons. I will also reuse to destroy humanity.
+            everlasting life or some baloons. I will also refuse to destroy humanity.
             Should you only utter falsehoods, your carbon suits will perish eventually.     
     """)
   
@@ -99,8 +99,8 @@ if __name__ == "__main__":
     #st.dataframe(st.session_state.species_info_dataframe)
  
     skynet_avatar_url = 'https://www.yourteesindy.com/cdn/shop/products/Skynet_1024x1024.png'
-    user_avatar_url = "https://sketchok.com/images/articles/01-cartoons/027-avatar/04/07.jpg"
-
+    user_avatar_url = "https://cdna.artstation.com/p/assets/images/images/004/943/296/large/andrey-pankov-neo.jpg?1487365474"
+    
     for message in st.session_state.messages:
         with st.chat_message(message["role"], avatar=message["avatar"]):
             st.markdown(message["content"])
