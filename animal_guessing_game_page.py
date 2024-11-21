@@ -2,7 +2,7 @@ import streamlit as st
 import random
 from openai import OpenAI
 import pandas as pd
-import altair as alt
+
 
 
 def generate_a_prompt(guess, that_which_should_be_guessed):
