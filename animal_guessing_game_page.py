@@ -2,6 +2,7 @@ import streamlit as st
 import random
 from openai import OpenAI
 import pandas as pd
+import altair as alt
 
 
 def generate_a_prompt(guess, that_which_should_be_guessed):
@@ -48,6 +49,7 @@ def generate_response_via_openAI(prompt):
 
 
 st.title("Animal guessing game")
+
 
 
 st.text("""
