@@ -72,22 +72,26 @@ if "species_info_dataframe" not in st.session_state:
 
 number_of_species = len(st.session_state.species_info_dataframe)
 
-if "target_species_number" not in st.session_state:
-    st.session_state.target_species_number = random.randint(0, number_of_species - 1)
+if "current_target_species_number" not in st.session_state:
+    st.session_state.current_target_species_number = random.randint(0, number_of_species - 1)
 
-if "target_species_name" not in st.session_state:
-    st.session_state.target_species_name = st.session_state.species_info_dataframe.iat[st.session_state.target_species_number, 0]
+if "current_target_species_name" not in st.session_state:
+    st.session_state.current_target_species_name = st.session_state.species_info_dataframe.iat[st.session_state.current_target_species_number, 0]
 
-st.write (st.session_state.target_species_name)
+st.write (st.session_state.current_target_species_name)
 
 
 #if 'target_number' not in st.session_state:
 #    st.session_state.target_number = random.randint(1,10)
 
-st.write("Target number is ", st.session_state.target_species_number)
+st.write("Target number is ", st.session_state.current_target_species_number)
 
-if 'number_of_guesses' not in st.session_state:
-    st.session_state.number_of_guesses = 0
+if 'current_number_of_guesses_in_current_game_iteration' not in st.session_state:
+    st.session_state.current_number_of_guesses_in_current_game_iteration = 0
+
+if 'total_number_of_guesses_per_game_iteration' not in st.session_state:
+    st.session_state.total_number_of_guesses_per_game_iteration = []
+
 
 if 'history_of_guesses' not in st.session_state:
     st.session_state.history_of_guesses = []
@@ -114,8 +118,8 @@ user_input = st.chat_input('Enter your question:')
 
 
 if user_input:
-    st.session_state.number_of_guesses += 1
-    st.session_state.history_of_guesses.append(user_input)
+    st.session_state.current_number_of_guesses_in_current_game_iteration += 1
+    
 
     st.session_state.messages.append({"role": "user", "content": user_input, "avatar": user_avatar_url})
     
@@ -123,15 +127,19 @@ if user_input:
     with st.chat_message("user", avatar = user_avatar_url):
         st.write(user_input)
 
-    prompt = generate_a_prompt (user_input, st.session_state.species_info_dataframe.iloc[st.session_state.target_species_number])
+    prompt = generate_a_prompt (user_input, st.session_state.species_info_dataframe.iloc[st.session_state.current_target_species_number])
     #st.write(prompt)
-    response, user_input_contains_target_species = generate_response_via_openAI(prompt)
+    response, user_input_contains_current_target_species = generate_response_via_openAI(prompt)
 
     st.session_state.messages.append({"role": "Skynet", "content": response, "avatar": skynet_avatar_url})
     with st.chat_message("Skynet", avatar=skynet_avatar_url):
             st.write(response)
     
-    if user_input_contains_target_species:
+    st.session_state.history_of_guesses.append([user_input, st.session_state.current_target_species_name, user_input_contains_current_target_species, st.session_state.current_number_of_guesses_in_current_game_iteration])
+    
+    if user_input_contains_current_target_species:
+        st.session_state.total_number_of_guesses_per_game_iteration.append(st.session_state.current_number_of_guesses_in_current_game_iteration)
+        st.session_state.current_number_of_guesses_in_current_game_iteration = 0
         st.balloons()
-        st.session_state.target_species_number = random.randint(0, number_of_species - 1)
-        st.session_state.target_species_name = st.session_state.species_info_dataframe.iat[st.session_state.target_species_number, 0]
+        st.session_state.current_target_species_number = random.randint(0, number_of_species - 1)
+        st.session_state.current_target_species_name = st.session_state.species_info_dataframe.iat[st.session_state.current_target_species_number, 0]
