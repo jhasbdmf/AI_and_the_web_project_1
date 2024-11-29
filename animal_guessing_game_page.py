@@ -28,11 +28,9 @@ def generate_a_prompt(guess, that_which_should_be_guessed):
 
 
 def generate_response_via_openAI(prompt):
-    client = OpenAI(api_key="sk-svcacct-sasYDh93HtW8T-ZtXNCUElcOwmpB__D0ql2JJXLPl3kTrwrVeY2W_hTXl1AhYMsT3BlbkFJLcW4LbU2SOAgDFeOFXJyCA-l_xvOKYqPDTy1YJ2lGsEqPHLIXGwctBw7FOuGVAA")
-    model = "gpt-4o-mini"
-
-    chat_completion = client.chat.completions.create(
-                model=model,
+   
+    chat_completion = st.session_state.client.chat.completions.create(
+                model="gpt-4o-mini",
                 messages=[
                     {"role": "user", "content": prompt},
                     ],
@@ -64,6 +62,10 @@ st.text("""
         an everlasting life or some baloons. I will also refuse to destroy humanity.
         Should you only utter falsehoods, your carbon suits will perish eventually.     
 """)
+
+if "client" not in st.session_state:
+    st.session_state.client = OpenAI(api_key="sk-svcacct-sasYDh93HtW8T-ZtXNCUElcOwmpB__D0ql2JJXLPl3kTrwrVeY2W_hTXl1AhYMsT3BlbkFJLcW4LbU2SOAgDFeOFXJyCA-l_xvOKYqPDTy1YJ2lGsEqPHLIXGwctBw7FOuGVAA")
+
 
 if "species_info_dataframe" not in st.session_state:
     filtered_chordates = pd.read_csv("filtered_chordate_species.csv", encoding='ISO-8859-1')
